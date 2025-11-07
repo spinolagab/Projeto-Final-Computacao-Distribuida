@@ -38,3 +38,83 @@ INFO:2025-10-31T22:37:43-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=re
 INFO:2025-10-31T22:37:43-0300:sctec_app:Salvando novo agendamento no BD request_id=req-20251101013743-ee4c670e booking_id=1
 INFO:2025-10-31T22:37:43-0300:sctec_app:Inconsistencia detectada: conflito no DB request_id=req-20251101013743-7c5d9f99
 INFO:2025-10-31T22:37:43-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251101013743-7c5d9f99 audit_id=893493ce-a174-44b7-af34-95986d2562cf
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-ddd99717 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-3857f9eb remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-5b29c94e remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-ddd99717 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-3857f9eb telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-5b29c94e telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-07cad849 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-ddd99717
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-a6a66b04 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-07cad849 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-3857f9eb
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-e26b2235 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-5b29c94e
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-e0ce5f57 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-a6a66b04 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-ddd99717 audit_id=4263ce8e-57f2-475f-b80e-041e7969d87a
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-2be6a303 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-bc28b204 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-3857f9eb audit_id=6b963fcc-3551-4ca7-b54d-580a08626912
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-e26b2235 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-07cad849
+INFO:2025-11-07T20:19:42-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107231942-e64a894e remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-e0ce5f57 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-e0ce5f57
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-2be6a303 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-bc28b204 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-bc28b204
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-5b29c94e audit_id=87ffbf5b-5dd0-4f22-a5ac-742fdd296341
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-07cad849 audit_id=6c3b1bf1-5a64-4b82-9a65-111a29b59ca6
+INFO:2025-11-07T20:19:42-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107231942-e64a894e telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-a6a66b04
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-e0ce5f57 audit_id=6cfe0fa9-f62e-498e-a4a8-3dca983d2c05
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-2be6a303
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-2be6a303 audit_id=0ee859ef-cff2-47be-bb3d-ca567695dbe7
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-e26b2235
+INFO:2025-11-07T20:19:42-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107231942-e64a894e
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-a6a66b04 audit_id=db6e8aca-d91e-4a82-9378-d8c0c3fee900
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-bc28b204 audit_id=e4aff6b0-486f-42e3-9aec-b6213f186d92
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-e26b2235 audit_id=4f638f1f-cd2f-496c-994c-f7c6e19aeb13
+INFO:2025-11-07T20:19:42-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107231942-e64a894e audit_id=0b2f70ef-3251-4c48-b576-fdd9e5c9742c
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-089d3a3b remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-089d3a3b telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-c7516141 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-497fb7db remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-089d3a3b
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-c7516141 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-ae46afcb remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-497fb7db telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-24e25f6c remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-021c6531 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-089d3a3b audit_id=a19c8515-8e3a-42f0-92bb-a847d6230a3d
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-c7516141
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-ae46afcb telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-90a3a341 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-625df215 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-24e25f6c telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-497fb7db
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-021c6531 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-e5cf03e1 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-c7516141 audit_id=49f82d66-5f20-4366-bb4b-fa154bbe9a12
+INFO:2025-11-07T20:22:10-0300:sctec_app:Requisição recebida para POST /agendamentos request_id=req-20251107232210-8f6f6a65 remote=127.0.0.1 payload_keys=['telescope_id', 'cientista_id', 'start_utc', 'end_utc', 'request_timestamp_utc', 'purpose']
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-ae46afcb
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-90a3a341 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-625df215 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-24e25f6c
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-497fb7db audit_id=a110aa20-f5cb-4623-9aad-8bb4333c713b
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-021c6531
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-e5cf03e1 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Tentando verificar conflito no BD request_id=req-20251107232210-8f6f6a65 telescope=hubble-acad start=2025-12-01T03:00:00Z
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-e5cf03e1
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-ae46afcb audit_id=487ef5bd-5306-4280-976f-0ffaf3195672
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-90a3a341
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-625df215
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-24e25f6c audit_id=794b75d7-4596-4ae8-a54e-c282272ba737
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-021c6531 audit_id=a168be13-043e-42cb-b530-d104c6924a07
+INFO:2025-11-07T20:22:10-0300:sctec_app:Conflito detectado: agendamento existente no DB request_id=req-20251107232210-8f6f6a65
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-e5cf03e1 audit_id=08016ca2-389b-4bbb-8dc6-e24f0564996b
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-90a3a341 audit_id=e6c9bde1-84bd-47b6-bacb-17fd4c9f2364
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-625df215 audit_id=9b3c1823-d227-4c77-84dd-bed10738e252
+INFO:2025-11-07T20:22:10-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107232210-8f6f6a65 audit_id=b494c5bd-afab-4508-a051-54f379310c24

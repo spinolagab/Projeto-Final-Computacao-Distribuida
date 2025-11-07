@@ -9,6 +9,7 @@ from functools import wraps
 
 from flask import Flask, request, jsonify, g
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError # IMPORTANTE: Adiciona a exceção de erro de integridade do DB
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -21,7 +22,11 @@ AUDIT_HMAC_KEY = os.environ.get("SCTEC_AUDIT_KEY", "dev_audit_key_change_me")  #
 
 # Flask + SQLAlchemy
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
+# CONFIGURAÇÃO DE ISOLAMENTO DE TRANSAÇÃO (pode ajudar, mas não é a solução única para o SQLite)
+# O SQLite por padrão usa 'DEFERRED'. 'IMMEDIATE' pode ser mais agressivo.
+# No entanto, a falha real é tratar a exceção.
+# Linha 48 CORRIGIDA
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}?isolation_level=IMMEDIATE"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -128,6 +133,7 @@ def list_telescopes():
         out.append({"id":t.id, "nome":t.nome, "links":[{"rel":"self","href":f"/telescopios/{t.id}"}]})
     return jsonify({"telescopes": out, "links":[{"rel":"create_booking","href":"/agendamentos","method":"POST"}]})
 
+# FUNÇÃO REINTRODUZIDA PARA VERIFICAÇÃO INICIAL
 def overlaps(telescope_id, start_utc, end_utc):
     # naive string-based iso comparisons; acceptable here as inputs are RFC3339 UTC identical format
     q = Booking.query.filter(Booking.telescope_id == telescope_id).all()
@@ -154,15 +160,13 @@ def create_booking():
 
     app_logger.info(f"Tentando verificar conflito no BD request_id={g.request_id} telescope={telescope_id} start={start_utc}")
 
-    # --------- CRITICAL SECTION (NO COORDINATOR) -----------
-    # This intentionally does not acquire an external lock (Entrega 2). Under high concurrency,
-    # this flow may exhibit a race condition where two requests both determine "no conflict"
-    # and both insert a Booking -> duplicates in DB and duplicated audit logs.
+    # --------- CRITICAL SECTION (CORRIGIDA COM TRATAMENTO DE EXCEÇÃO DE DB) -----------
     try:
+        # 1. Checagem inicial de sobreposição (ainda vulnerável na corrida, mas filtra a maioria)
         conflict = overlaps(telescope_id, start_utc, end_utc)
         if conflict:
-            app_logger.info(f"Inconsistencia detectada: conflito no DB request_id={g.request_id}")
-            # emit audit: AGENDAMENTO_RECUSADO
+            app_logger.info(f"Conflito detectado: agendamento existente no DB request_id={g.request_id}")
+            # Se a reserva já existe, rejeita e audita.
             audit = {
                 "timestamp_utc": now_rfc3339_ms(),
                 "level": "AUDIT",
@@ -180,7 +184,7 @@ def create_booking():
             write_audit_log(audit)
             return jsonify({"error":"RESOURCE_CONFLICT","message":"Time slot already taken","request_id":g.request_id}), 409
 
-        # No conflict -> create booking
+        # 2. No conflict -> create booking
         booking = Booking(
             telescope_id=telescope_id,
             cientista_id=cientista_id,
@@ -190,9 +194,11 @@ def create_booking():
             status="CONFIRMED"
         )
         db.session.add(booking)
-        db.session.commit()  # <-- under concurrency, two threads may succeed here if they both passed the overlap check before either commit
-
-        # create audit entry for AGENDAMENTO_CRIADO
+        
+        # 3. Tentativa de COMMIT (aqui ocorre o conflito de transação/bloqueio)
+        db.session.commit() # <-- Se outra thread comitou um agendamento conflitante AQUI, esta linha falhará
+        
+        # 4. create audit entry for AGENDAMENTO_CRIADO
         audit = {
             "timestamp_utc": now_rfc3339_ms(),
             "level": "AUDIT",
@@ -210,10 +216,35 @@ def create_booking():
         }
         write_audit_log(audit)
 
-        # update booking.audit_log_ref
+        # 5. update booking.audit_log_ref
         booking.audit_log_ref = audit["id"]
         db.session.add(booking)
         db.session.commit()
+
+    # TRATAMENTO DA FALHA DE CONCORRÊNCIA:
+    except IntegrityError as e:
+        # Captura o erro que ocorre quando duas threads tentam comitar ao mesmo tempo 
+        # e a primeira já garantiu o bloqueio da tabela no SQLite.
+        app_logger.info(f"CONCORRÊNCIA DETECTADA: Falha de Integridade/Bloqueio no COMMIT. request_id={g.request_id}")
+        db.session.rollback() # Obriga o rollback da transação com falha
+        
+        # Audita a rejeição devido à concorrência
+        audit = {
+            "timestamp_utc": now_rfc3339_ms(),
+            "level": "AUDIT",
+            "event_type": "AGENDAMENTO_RECUSADO",
+            "service": "servico-agendamento",
+            "request_id": g.request_id,
+            "details": {
+                "telescope_id": telescope_id,
+                "cientista_id": cientista_id,
+                "start_utc": start_utc,
+                "end_utc": end_utc,
+                "reason": "CONCURRENCY_COMMIT_FAIL"
+            }
+        }
+        write_audit_log(audit)
+        return jsonify({"error":"RESOURCE_CONFLICT","message":"Time slot already taken (Concurrency Detected)","request_id":g.request_id}), 409
 
     except Exception as e:
         app_logger.exception(f"Erro interno ao criar agendamento request_id={g.request_id} err={e}")
@@ -288,7 +319,19 @@ def initdb_command():
 
 # Run
 if __name__ == "__main__":
-    # ensure DB exists
+    # Garante que o DB exista E contenha os dados de amostra
+    # ao rodar 'python app.py'
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0", port=5000, debug=False)
+        # Popula os dados essenciais (da lógica do initdb)
+        if not Telescope.query.get("hubble-acad"):
+            t = Telescope(id="hubble-acad", nome="Hubble Academic", descricao="Telescópio acadêmico")
+            db.session.add(t)
+            print("Telescópio 'hubble-acad' criado.")
+        if not Scientist.query.filter_by(email="marie.curie@example.com").first():
+            s = Scientist(nome="Marie Curie", email="marie.curie@example.com", instituicao="Institut de Radiologie")
+            db.session.add(s)
+            print("Cientista 'Marie Curie' (ID 1) criada.")
+        db.session.commit()
+        
+    app.run(host="127.0.0.1", port=5000, debug=False)
