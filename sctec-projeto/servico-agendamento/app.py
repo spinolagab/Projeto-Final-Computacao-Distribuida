@@ -134,13 +134,116 @@ def release_lock(resource_id):
         app_logger.error(f"Erro ao liberar lock: {e}")
 
 # --- Rotas ---
+
 @app.route("/time", methods=["GET"])
 def get_time():
-    app_logger.info(f"GET /time request_id={g.request_id}")
+    # 🔹 NOVO: Log de aplicação
+    app_logger.info(f"GET /time request_id={g.request_id} remote_ip={g.remote_ip}")
+    
+    server_time = now_rfc3339_ms()
+    
     return jsonify({
-        "server_time_utc": now_rfc3339_ms(),
+        "server_time_utc": server_time,
         "server_unix_ms": int(datetime.utcnow().timestamp() * 1000)
     })
+
+# 🔹 NOVO: Endpoint de Cancelamento
+@app.route("/agendamentos/<int:booking_id>", methods=["DELETE"])
+def cancel_booking(booking_id):
+    """Cancela um agendamento existente"""
+    app_logger.info(f"DELETE /agendamentos/{booking_id} request_id={g.request_id} remote_ip={g.remote_ip}")
+    
+    booking = Booking.query.get(booking_id)
+    if not booking:
+        app_logger.warning(f"Agendamento não encontrado: {booking_id}")
+        return jsonify({
+            "error": "NOT_FOUND",
+            "message": f"Agendamento {booking_id} não encontrado"
+        }), 404
+    
+    if booking.status == "CANCELLED":
+        return jsonify({
+            "error": "ALREADY_CANCELLED",
+            "message": "Este agendamento já foi cancelado"
+        }), 400
+    
+    # Armazena dados antes de cancelar
+    old_status = booking.status
+    telescope_id = booking.telescope_id
+    cientista_id = booking.cientista_id
+    start_utc = booking.start_utc
+    
+    # Cancela o agendamento
+    booking.status = "CANCELLED"
+    booking.updated_at = datetime.utcnow()
+    db.session.commit()
+    
+    # 🔹 AUDITORIA: Log do cancelamento
+    audit = {
+        "timestamp_utc": now_rfc3339_ms(),
+        "level": "AUDIT",
+        "event_type": "AGENDAMENTO_CANCELADO",
+        "service": "servico-agendamento",
+        "request_id": g.request_id,
+        "remote_ip": g.remote_ip,
+        "details": {
+            "agendamento_id": booking_id,
+            "cientista_id": cientista_id,
+            "telescope_id": telescope_id,
+            "start_utc": start_utc,
+            "old_status": old_status,
+            "new_status": "CANCELLED"
+        }
+    }
+    write_audit_log(audit)
+    
+    app_logger.info(f"Agendamento {booking_id} cancelado com sucesso")
+    
+    return jsonify({
+        "message": "Agendamento cancelado com sucesso",
+        "id": booking_id,
+        "status": "CANCELLED",
+        "request_id": g.request_id,
+        "links": [
+            {"rel": "self", "href": f"/agendamentos/{booking_id}", "method": "GET"},
+            {"rel": "list", "href": "/agendamentos", "method": "GET"}
+        ]
+    }), 200
+
+# 🔹 NOVO: Obter detalhes de um agendamento (para links HATEOAS)
+@app.route("/agendamentos/<int:booking_id>", methods=["GET"])
+def get_booking(booking_id):
+    """Retorna detalhes de um agendamento específico"""
+    app_logger.info(f"GET /agendamentos/{booking_id} request_id={g.request_id}")
+    
+    booking = Booking.query.get(booking_id)
+    if not booking:
+        return jsonify({"error": "NOT_FOUND"}), 404
+    
+    response = {
+        "id": booking.id,
+        "telescope_id": booking.telescope_id,
+        "cientista_id": booking.cientista_id,
+        "start_utc": booking.start_utc,
+        "end_utc": booking.end_utc,
+        "status": booking.status,
+        "request_timestamp_utc": booking.request_timestamp_utc,
+        "created_at": booking.created_at.isoformat() + "Z",
+        "links": [
+            {"rel": "self", "href": f"/agendamentos/{booking_id}", "method": "GET"},
+            {"rel": "list", "href": "/agendamentos", "method": "GET"}
+        ]
+    }
+    
+    # 🔹 HATEOAS: Só adiciona link de cancelamento se não estiver cancelado
+    if booking.status != "CANCELLED":
+        response["links"].append({
+            "rel": "cancel",
+            "href": f"/agendamentos/{booking_id}",
+            "method": "DELETE"
+        })
+    
+    return jsonify(response), 200
 
 @app.route("/agendamentos", methods=["POST"])
 @require_json

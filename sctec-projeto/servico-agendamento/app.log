@@ -669,3 +669,95 @@ INFO:2025-11-07T20:43:20-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=re
 INFO:2025-11-07T20:43:20-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107234320-3f010235 audit_id=78e933ee-cd84-4fca-a5f5-a26e4f66110a
 INFO:2025-11-07T20:43:20-0300:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251107234320-a6d8751b audit_id=82f78bcd-2e61-4723-9244-1c11f99a8da9
 INFO:2025-11-07T20:43:20-0300:sctec_app:Lock liberado para recurso=hubble-acad_2025-12-01T03:00:00Z status=200
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-4c9caf1a
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-f12310d4
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f0be60>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-f12310d4 audit_id=f75615ef-812c-4feb-af1a-13341f840dc8
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-9411ae61
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-aae784a1
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f0bec0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-7b06dd2b
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f0b830>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-effc8332
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f3d8b0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-40d4c8fe
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-f546516d
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f3fda0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f0aa50>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-aae784a1 audit_id=72f9dc76-fdbd-494c-9304-cbfa5cdf702c
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-effc8332 audit_id=a49b98d4-5b47-4546-a135-f4a92434a98f
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-4c9caf1a audit_id=b53b2830-fae7-4812-9cf1-cac6490be985
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-b62b49f9
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f0aed0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108004943-4e132501
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f60bf0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-9411ae61 audit_id=e8f66ba4-da22-4366-8c6e-f6f598f23169
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-40d4c8fe audit_id=0adaa6e7-1d3c-4165-bd97-d84518fbee60
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f60680>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-b62b49f9 audit_id=d8e6e52d-b196-4459-9265-9c528ae8b267
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-f546516d audit_id=370111e4-e066-49b3-b218-b5e42f35c86e
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-7b06dd2b audit_id=713e255b-acae-4e20-b422-56120e39fc20
+ERROR:2025-11-08T00:49:43+0000:sctec_app:Erro ao comunicar com o Coordenador: HTTPConnectionPool(host='127.0.0.1', port=3000): Max retries exceeded with url: /lock (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x732192f615b0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+INFO:2025-11-08T00:49:43+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108004943-4e132501 audit_id=fee4748b-631e-46c6-8963-c0155f833f55
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-e00d5310
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-885dcc6e
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-8f029a86
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-682ba255
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-7c843bb5
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-dc5e333f
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-cb76aa64
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-051f7d80
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-42a1d03b
+INFO:2025-11-08T00:50:00+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-2f123d5a
+INFO:2025-11-08T00:50:00+0000:sctec_app:Lock adquirido com sucesso para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-e00d5310
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-682ba255
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-885dcc6e
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-dc5e333f
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-8f029a86
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-885dcc6e audit_id=b0191fd4-1bc7-408a-8f5e-a74be7d4fc7f
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-dc5e333f audit_id=29c0e832-1dd3-44c1-a0cc-3f27647636e8
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-682ba255 audit_id=b102e621-b835-4287-9c32-34ab0f5537f9
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-cb76aa64
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-2f123d5a
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-42a1d03b
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-7c843bb5
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-2f123d5a audit_id=0a717c2d-4a72-40d8-9a77-9baa2dfb253b
+INFO:2025-11-08T00:50:00+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005000-051f7d80
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-cb76aa64 audit_id=7e4f3c9d-ca3d-4ded-bca8-e81236070b4a
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-8f029a86 audit_id=19680791-84d3-466c-9eaf-1fa10338f508
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-42a1d03b audit_id=3b4cda9d-c776-4ad8-a7fe-315ecd5d86b2
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-051f7d80 audit_id=4f9af535-3270-4b58-88e2-f2cb66f4930e
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005000-7c843bb5 audit_id=0560166e-8475-4a83-a0f4-a2dd52886e94
+INFO:2025-11-08T00:50:00+0000:sctec_app:AUDIT:AGENDAMENTO_CRIADO request_id=req-20251108005000-e00d5310 audit_id=f91a358b-5084-4f61-a51f-4a06411b9f6e
+INFO:2025-11-08T00:50:00+0000:sctec_app:Lock liberado para recurso=hubble-acad_2025-12-01T03:00:00Z status=200
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-fea09523
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-ce5efd02
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-08486fcf
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-ed1ca344
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-85c85779
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-99a39205
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-d13c8b40
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-8ff2e9db
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-bbb1051f
+INFO:2025-11-08T00:54:57+0000:sctec_app:Tentando adquirir lock para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-d147ce85
+INFO:2025-11-08T00:54:57+0000:sctec_app:Lock adquirido com sucesso para recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-ce5efd02
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-fea09523
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-fea09523 audit_id=ec8984c7-9363-4f1b-9596-0e9383ee9383
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-08486fcf
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-08486fcf audit_id=d0a1cba6-996a-4a4d-aa9d-4dc72989d821
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-ed1ca344
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-ed1ca344 audit_id=99610613-36dd-43a4-8630-7dd82e021654
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-85c85779
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_CRIADO request_id=req-20251108005457-ce5efd02 audit_id=545e9da4-36bc-458d-ac19-636673efac89
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-85c85779 audit_id=2835de56-a794-4798-a4b3-626d22a3a541
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-8ff2e9db
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-99a39205
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-bbb1051f
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-d147ce85
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-d147ce85 audit_id=9929d62c-3ca0-42de-ba66-942194834b64
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-8ff2e9db audit_id=ae0e97bb-1b64-43c0-8507-cdd5bad06253
+INFO:2025-11-08T00:54:57+0000:sctec_app:Falha ao adquirir lock (recurso ocupado) recurso=hubble-acad_2025-12-01T03:00:00Z request_id=req-20251108005457-d13c8b40
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-d13c8b40 audit_id=452422eb-7828-438a-a70b-401ac6513d99
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-bbb1051f audit_id=47d2e7ef-94e1-4e83-9a4c-4af6c627a246
+INFO:2025-11-08T00:54:57+0000:sctec_app:AUDIT:AGENDAMENTO_RECUSADO request_id=req-20251108005457-99a39205 audit_id=d6ef1d0e-513e-40fb-bce6-a8543876e3f3
+INFO:2025-11-08T00:54:57+0000:sctec_app:Lock liberado para recurso=hubble-acad_2025-12-01T03:00:00Z status=200
