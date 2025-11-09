@@ -4,7 +4,9 @@ import uuid
 import hmac
 import hashlib
 import json
-import requests  # 🔹 NOVO: comunicação com o serviço coordenador
+import requests  
+from flask_cors import CORS
+from flask import send_from_directory
 from datetime import datetime
 from functools import wraps
 
@@ -22,12 +24,23 @@ APP_LOG_FILE = os.environ.get("SCTEC_APP_LOG", os.path.join(BASE_DIR, "app.log")
 AUDIT_HMAC_KEY = os.environ.get("SCTEC_AUDIT_KEY", "dev_audit_key_change_me")
 
 # 🔹 NOVO: URL do Coordenador
-LOCK_SERVICE_URL = os.environ.get("LOCK_SERVICE_URL", "http://127.0.0.1:3000")
+COORDENADOR_URL = os.environ.get("COORDENADOR_URL", "http://127.0.0.1:3000")
 
 # Flask + SQLAlchemy
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}?isolation_level=IMMEDIATE"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",  
+        "methods": ["GET", "POST", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "X-Request-Id"],
+        "expose_headers": ["X-Request-Id"],
+        "supports_credentials": False
+    }
+})
+
 db = SQLAlchemy(app)
 
 # --- Models ---
@@ -73,6 +86,17 @@ stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
 app_logger.addHandler(stream_handler)
 
+
+def overlaps(telescope_id, start_utc, end_utc):
+    """Verifica se há sobreposição de horários para o telescópio"""
+    existing = Booking.query.filter(
+        Booking.telescope_id == telescope_id,
+        Booking.status == "CONFIRMED",
+        Booking.start_utc < end_utc,
+        Booking.end_utc > start_utc
+    ).first()
+    return existing is not None
+
 # --- Audit Log ---
 def write_audit_log(entry: dict):
     if "id" not in entry:
@@ -108,32 +132,45 @@ def attach_request_id():
     g.remote_ip = request.remote_addr
 
 # --- NOVO: Funções para lock/unlock ---
-def acquire_lock(resource_id):
-    """Solicita lock ao serviço coordenador"""
+def acquire_lock(resource_id, owner_id="servico-agendamento-1", ttl_seconds=30):
+    """Tenta adquirir lock no coordenador"""
     try:
-        res = requests.post(f"{LOCK_SERVICE_URL}/lock", json={"resource": resource_id}, timeout=2)
-        if res.status_code == 200:
-            app_logger.info(f"Lock adquirido com sucesso para recurso={resource_id} request_id={g.request_id}")
+        response = requests.post(
+            f"{COORDENADOR_URL}/lock",
+            json={"resource": resource_id},
+            timeout=5
+        )
+        if response.status_code == 200:
+            app_logger.info(f"Lock adquirido: {resource_id}")
             return True
-        elif res.status_code == 409:
-            app_logger.info(f"Falha ao adquirir lock (recurso ocupado) recurso={resource_id} request_id={g.request_id}")
-            return False
         else:
-            app_logger.warning(f"Erro inesperado ao adquirir lock: status={res.status_code}")
+            app_logger.warning(f"Lock negado: {resource_id}")
             return False
-    except requests.exceptions.RequestException as e:
-        app_logger.error(f"Erro ao comunicar com o Coordenador: {e}")
+    except Exception as e:
+        app_logger.error(f"Erro ao adquirir lock: {e}")
         return False
 
 def release_lock(resource_id):
-    """Libera lock no serviço coordenador"""
+    """Libera lock no coordenador"""
     try:
-        res = requests.post(f"{LOCK_SERVICE_URL}/unlock", json={"resource": resource_id}, timeout=2)
-        app_logger.info(f"Lock liberado para recurso={resource_id} status={res.status_code}")
-    except requests.exceptions.RequestException as e:
+        response = requests.post(
+            f"{COORDENADOR_URL}/unlock",
+            json={"resource": resource_id},
+            timeout=5
+        )
+        app_logger.info(f"Lock liberado: {resource_id}")
+    except Exception as e:
         app_logger.error(f"Erro ao liberar lock: {e}")
 
 # --- Rotas ---
+
+@app.route("/")
+def index():
+    return send_from_directory(".", "index.html")
+
+@app.route("/<path:filename>")
+def static_files(filename):
+    return send_from_directory(".", filename)
 
 @app.route("/time", methods=["GET"])
 def get_time():
@@ -249,42 +286,56 @@ def get_booking(booking_id):
 @require_json
 def create_booking():
     payload = request.get_json()
+    app_logger.info(f"Requisição recebida para POST /agendamentos request_id={g.request_id}")
+    
+    # Validação
     required = ["telescope_id", "cientista_id", "start_utc", "end_utc", "request_timestamp_utc"]
     for r in required:
         if r not in payload:
             return jsonify({"error":"BAD_REQUEST","message":f"missing {r}"}), 400
-
+    
     telescope_id = payload["telescope_id"]
     cientista_id = payload["cientista_id"]
     start_utc = payload["start_utc"]
     end_utc = payload["end_utc"]
-
-    # 🔹 RECURSO PARA LOCK (único por telescópio + início)
+    
+    # Criar resource_id único para o lock
     resource_id = f"{telescope_id}_{start_utc}"
-
-    app_logger.info(f"Tentando adquirir lock para recurso={resource_id} request_id={g.request_id}")
-
-    lock_acquired = acquire_lock(resource_id)
-    if not lock_acquired:
-        # Audita tentativa recusada
+    
+    # 1. TENTAR ADQUIRIR LOCK
+    if not acquire_lock(resource_id):
         audit = {
             "timestamp_utc": now_rfc3339_ms(),
             "level": "AUDIT",
-            "event_type": "AGENDAMENTO_RECUSADO",
+            "event_type": "LOCK_CONFLICT",
             "service": "servico-agendamento",
             "request_id": g.request_id,
-            "details": {
-                "telescope_id": telescope_id,
-                "cientista_id": cientista_id,
-                "start_utc": start_utc,
-                "reason": "LOCK_DENIED"
-            }
+            "details": {"resource_id": resource_id, "reason": "LOCK_DENIED"}
         }
         write_audit_log(audit)
-        return jsonify({"error":"RESOURCE_CONFLICT","message":"Recurso bloqueado (lock negado)","request_id":g.request_id}), 409
-
+        return jsonify({"error":"RESOURCE_LOCKED","message":"Recurso está sendo acessado por outro processo"}), 409
+    
     try:
-        # Operação crítica
+        # 2. VERIFICAR CONFLITO
+        conflict = overlaps(telescope_id, start_utc, end_utc)
+        if conflict:
+            audit = {
+                "timestamp_utc": now_rfc3339_ms(),
+                "level": "AUDIT",
+                "event_type": "AGENDAMENTO_RECUSADO",
+                "service": "servico-agendamento",
+                "request_id": g.request_id,
+                "details": {
+                    "telescope_id": telescope_id,
+                    "start_utc": start_utc,
+                    "end_utc": end_utc,
+                    "reason": "OVERLAP"
+                }
+            }
+            write_audit_log(audit)
+            return jsonify({"error":"RESOURCE_CONFLICT","message":"Horário já reservado"}), 409
+        
+        # 3. CRIAR BOOKING
         booking = Booking(
             telescope_id=telescope_id,
             cientista_id=cientista_id,
@@ -295,7 +346,8 @@ def create_booking():
         )
         db.session.add(booking)
         db.session.commit()
-
+        
+        # 4. AUDITAR
         audit = {
             "timestamp_utc": now_rfc3339_ms(),
             "level": "AUDIT",
@@ -311,27 +363,34 @@ def create_booking():
             }
         }
         write_audit_log(audit)
-        booking.audit_log_ref = audit["id"]
-        db.session.add(booking)
-        db.session.commit()
-
-        response_body = {
+        
+        return jsonify({
             "id": booking.id,
-            "telescope_id": telescope_id,
-            "start_utc": start_utc,
-            "end_utc": end_utc,
+            "telescope_id": booking.telescope_id,
+            "start_utc": booking.start_utc,
+            "end_utc": booking.end_utc,
             "status": booking.status,
-            "request_id": g.request_id,
             "links": [
                 {"rel":"self","href":f"/agendamentos/{booking.id}","method":"GET"},
-                {"rel":"cancel","href":f"/agendamentos/{booking.id}","method":"DELETE"},
-                {"rel":"telescopio","href":f"/telescopios/{telescope_id}","method":"GET"}
+                {"rel":"cancel","href":f"/agendamentos/{booking.id}","method":"DELETE"}
             ]
+        }), 201
+    
+    except IntegrityError:
+        db.session.rollback()
+        audit = {
+            "timestamp_utc": now_rfc3339_ms(),
+            "level": "AUDIT",
+            "event_type": "AGENDAMENTO_RECUSADO",
+            "service": "servico-agendamento",
+            "request_id": g.request_id,
+            "details": {"reason": "CONCURRENCY_COMMIT_FAIL"}
         }
-        return jsonify(response_body), 201
-
+        write_audit_log(audit)
+        return jsonify({"error":"RESOURCE_CONFLICT","message":"Conflito de concorrência"}), 409
+    
     finally:
-        # 🔹 Libera lock sempre, mesmo com erro
+        # 5. LIBERAR LOCK (SEMPRE)
         release_lock(resource_id)
 
 # --- Demais rotas (sem alteração significativa) ---

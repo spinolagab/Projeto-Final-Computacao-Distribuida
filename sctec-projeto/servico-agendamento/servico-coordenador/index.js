@@ -1,8 +1,14 @@
 // index.js
 import express from "express";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: "*",  // Permite qualquer origem em dev
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 // Porta padrão (pode ser alterada via variável de ambiente)
 const PORT = process.env.PORT || 3000;

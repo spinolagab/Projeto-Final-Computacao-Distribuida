@@ -590,41 +590,76 @@
         class ClientRequests {
             constructor() {
                 this.baseURL = 'http://127.0.0.1:5000';
-                this.lastBookingData = null; // 🔹 Armazena dados da última reserva
+                this.lastBookingData = null;
+                this.timeOffset = 0; // 🔹 NOVO: offset de tempo calculado
             }
 
-            /**
-             * 🔹 NOVO: Solicita tempo do servidor
-             */
             async getServerTime() {
                 try {
                     const response = await fetch(`${this.baseURL}/time`);
                     const data = await response.json();
                     
-                    console.log('⏰ Tempo do servidor:', data);
-                    berkeleySync.log(`Tempo do servidor: ${data.server_time_utc}`, 'info');
+                    berkeleySync.log(`⏰ Tempo do servidor: ${data.server_time_utc}`, 'info');
+                    berkeleySync.log(`📊 Unix timestamp: ${data.server_unix_ms} ms`, 'info');
                     
-                    return data;
+                    return { success: true, data };
+                    
                 } catch (error) {
-                    console.error('Erro ao obter tempo do servidor:', error);
-                    berkeleySync.log('Erro ao obter tempo do servidor', 'error');
+                    console.error('Erro ao obter tempo:', error);
+                    berkeleySync.log('❌ Erro ao obter tempo do servidor', 'error');
+                    return { success: false, error: error.message };
+                }
+            }
+
+            /**
+             * 🔹 IMPLEMENTA SINCRONIZAÇÃO DE TEMPO (Algoritmo de Cristian simplificado)
+             */
+            async synchronizeTime() {
+                try {
+                    const t0 = performance.now();
+                    const response = await fetch(`${this.baseURL}/time`);
+                    const t1 = performance.now();
+                    
+                    const data = await response.json();
+                    const rtt = t1 - t0; // Round-Trip Time
+                    
+                    const serverTime = new Date(data.server_time_utc).getTime();
+                    const localTime = Date.now();
+                    
+                    // Ajusta pelo RTT/2 (tempo de ida)
+                    this.timeOffset = serverTime - localTime + (rtt / 2);
+                    
+                    berkeleySync.log(`⏰ Tempo sincronizado! Offset: ${this.timeOffset.toFixed(2)} ms`, 'success');
+                    
+                    return this.timeOffset;
+                } catch (error) {
+                    console.error('Erro ao sincronizar tempo:', error);
+                    berkeleySync.log('❌ Falha na sincronização de tempo', 'error');
                     throw error;
                 }
             }
 
             /**
-             * 🔹 Cria um novo agendamento
+             * 🔹 RETORNA TIMESTAMP SINCRONIZADO
+             */
+            getSynchronizedTimestamp() {
+                return new Date(Date.now() + this.timeOffset).toISOString();
+            }
+
+            /**
+             * 🔹 Cria agendamento COM SINCRONIZAÇÃO
              */
             async createBooking(telescopeId, cientistaId, startUTC, endUTC) {
                 try {
-                    const serverTime = await this.getServerTime();
+                    // 1. SINCRONIZAR TEMPO
+                    await this.synchronizeTime();
                     
                     const bookingData = {
                         telescope_id: telescopeId,
                         cientista_id: cientistaId,
                         start_utc: startUTC,
                         end_utc: endUTC,
-                        request_timestamp_utc: serverTime.server_time_utc
+                        request_timestamp_utc: this.getSynchronizedTimestamp() // 🔹 USA TEMPO SINCRONIZADO
                     };
 
                     const response = await fetch(`${this.baseURL}/agendamentos`, {
@@ -639,24 +674,22 @@
                     const data = await response.json();
 
                     if (!response.ok) {
-                        berkeleySync.log(`Erro ao criar agendamento: ${data.message || data.error}`, 'error');
+                        berkeleySync.log(`❌ Erro ao criar agendamento: ${data.message || data.error}`, 'error');
                         return { success: false, error: data };
                     }
 
-                    // 🔹 ARMAZENA links HATEOAS
                     this.lastBookingData = data;
-                    
                     berkeleySync.log(`✅ Agendamento criado: ID ${data.id}`, 'success');
-                    console.log('📋 Links HATEOAS disponíveis:', data.links);
                     
                     return { success: true, data };
                     
                 } catch (error) {
                     console.error('Erro na requisição:', error);
-                    berkeleySync.log('Erro de rede ao criar agendamento', 'error');
+                    berkeleySync.log('❌ Erro de rede ao criar agendamento', 'error');
                     return { success: false, error: error.message };
                 }
             }
+            
 
             /**
              * 🔹 NOVO: Cancela um agendamento usando HATEOAS
