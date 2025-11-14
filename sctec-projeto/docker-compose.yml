@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  coordenador:
+    build:
+      context: ./servico-coordenador
+      dockerfile: Dockerfile
+    container_name: sctec-coordenador
+    ports:
+      - "3000:3000"
+    networks:
+      - sctec-network
+    environment:
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  agendamento:
+    build:
+      context: ./servico-agendamento
+      dockerfile: Dockerfile
+    container_name: sctec-agendamento
+    ports:
+      - "5000:5000"
+    networks:
+      - sctec-network
+    environment:
+      - COORDENADOR_URL=http://coordenador:3000
+      - SCTEC_DB_PATH=/app/data/sctec.db
+      - SCTEC_AUDIT_LOG=/app/data/audit.log
+      - SCTEC_APP_LOG=/app/data/app.log
+    volumes:
+      - agendamento-data:/app/data
+    depends_on:
+      coordenador:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/time')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  sctec-network:
+    driver: bridge
+
+volumes:
+  agendamento-data:
+    driver: local

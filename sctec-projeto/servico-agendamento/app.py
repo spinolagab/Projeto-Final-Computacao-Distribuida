@@ -24,7 +24,9 @@ APP_LOG_FILE = os.environ.get("SCTEC_APP_LOG", os.path.join(BASE_DIR, "app.log")
 AUDIT_HMAC_KEY = os.environ.get("SCTEC_AUDIT_KEY", "dev_audit_key_change_me")
 
 # 🔹 NOVO: URL do Coordenador
-COORDENADOR_URL = os.environ.get("COORDENADOR_URL", "http://127.0.0.1:3000")
+# COORDENADOR_URL = os.environ.get("COORDENADOR_URL", "http://127.0.0.1:3000")
+
+COORDENADOR_URL = os.environ.get("COORDENADOR_URL", "http://coordenador:3000")
 
 # Flask + SQLAlchemy
 app = Flask(__name__)
